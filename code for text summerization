@@ -1,0 +1,40 @@
+from transformers import pipeline
+
+def summarize_text(text, max_length=100, min_length=30, do_sample=False):
+    """
+    Summarizes the input text using the BART model.
+    
+    Parameters:
+        text (str): The input text to summarize.
+        max_length (int): Maximum token length for the summary.
+        min_length (int): Minimum token length for the summary.
+        do_sample (bool): Whether to use sampling (True) or beam search (False).
+        
+    Returns:
+        str: The generated summary text.
+    """
+    # Create the summarization pipeline using the BART model.
+    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+    
+    # Generate the summary.
+    summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=do_sample)
+    return summary[0]["summary_text"]
+
+def main():
+    # Example input text.
+    text = """
+    The quick brown fox jumps over the lazy dog. This is an example sentence to demonstrate text summarization.
+    In practice, you would replace this text with your own content. The BART model is designed to generate concise and accurate summaries
+    by rephrasing the original text. It has been fine-tuned on large datasets, making it suitable for summarizing news articles,
+    reports, and other long documents. Using this tool, you can quickly extract the main ideas from lengthy text passages.
+    """
+    
+    # Generate and print the summary.
+    summary_result = summarize_text(text)
+    print("Original Text:")
+    print(text)
+    print("\nSummary:")
+    print(summary_result)
+
+if __name__ == '__main__':
+    main()
